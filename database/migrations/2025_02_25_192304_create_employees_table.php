@@ -13,6 +13,18 @@ return new class extends Migration
     {
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
+            $table->string('first_name');
+            $table->string('last_name');
+            $table->string('email')->unique();
+            $table->string('phone');
+            $table->date('date_of_birth');
+            $table->date('hire_date');
+            $table->string('address');
+            $table->string('contract_type');
+            $table->decimal('salary', 8, 2);
+            $table->string('status');
+            $table->foreignId('company_id')->constrained()->onDelete('cascade');
+            $table->foreignId('department_id')->nullable()->constrained()->onDelete('set null');
             $table->timestamps();
         });
     }
