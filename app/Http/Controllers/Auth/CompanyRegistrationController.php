@@ -41,6 +41,8 @@ class CompanyRegistrationController extends Controller
             'company_id' => $company->id,
         ]);
 
+        $user->assignRole('admin');
+
         auth()->login($user);
 
         return redirect('/dashboard');

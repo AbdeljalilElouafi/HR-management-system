@@ -11,54 +11,81 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        //
+        $employees = Employee::with('company', 'department')->get();
+        return view('employees.index', compact('employees'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    
     public function create()
     {
-        //
+        $companies = Company::all();
+        $departments = Department::all();
+        return view('employees.create', compact('companies', 'departments'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|email|unique:employees,email',
+            'phone' => 'required|string|max:20',
+            'date_of_birth' => 'required|date',
+            'hire_date' => 'required|date',
+            'address' => 'required|string|max:255',
+            'contract_type' => 'required|string|max:255',
+            'salary' => 'required|numeric',
+            'status' => 'required|string|max:255',
+            'company_id' => 'required|exists:companies,id',
+            'department_id' => 'nullable|exists:departments,id',
+        ]);
+
+        Employee::create($request->all());
+
+        return redirect()->route('employees.index')->with('success', 'Employee created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    
+    public function show(Employee $employee)
     {
-        //
+        return view('employees.show', compact('employee'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit(Employee $employee)
     {
-        //
+        $companies = Company::all();
+        $departments = Department::all();
+        return view('employees.edit', compact('employee', 'companies', 'departments'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+
+    public function update(Request $request, Employee $employee)
     {
-        //
+        $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|email|unique:employees,email,' . $employee->id,
+            'phone' => 'required|string|max:20',
+            'date_of_birth' => 'required|date',
+            'hire_date' => 'required|date',
+            'address' => 'required|string|max:255',
+            'contract_type' => 'required|string|max:255',
+            'salary' => 'required|numeric',
+            'status' => 'required|string|max:255',
+            'company_id' => 'required|exists:companies,id',
+            'department_id' => 'nullable|exists:departments,id',
+        ]);
+
+        $employee->update($request->all());
+
+        return redirect()->route('employees.index')->with('success', 'Employee updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+
+    public function destroy(Employee $employee)
     {
-        //
+        $employee->delete();
+        return redirect()->route('employees.index')->with('success', 'Employee deleted successfully.');
     }
 }
