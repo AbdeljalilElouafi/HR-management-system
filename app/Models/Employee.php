@@ -25,6 +25,7 @@ class Employee extends Model
         'company_id',
         'department_id',
         'manager_id',
+        'emploi_id',
     ];
 
     public function company()
@@ -46,4 +47,10 @@ class Employee extends Model
     {
         return $this->hasMany(Employee::class, 'manager_id');
     }
+
+    public function emploi()
+    {
+        return $this->belongsTo(Emploi::class);
+    }
+
 }
