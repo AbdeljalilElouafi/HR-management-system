@@ -4,12 +4,14 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\CompanyRegistrationController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\EmploiController;
 
 
 Route::view('/', 'welcome');
 
 Route::resource('employees', EmployeeController::class);
 Route::resource('departments', DepartmentController::class);
+Route::resource('emplois', EmploiController::class);
 
 
 Route::get('/company/register', [CompanyRegistrationController::class, 'showRegistrationForm'])->name('company.register');
