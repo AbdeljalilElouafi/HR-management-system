@@ -1,10 +1,10 @@
 @extends('layouts.app')
 @section('content')
-<div class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen p-6">
+<div class="bg-gradient-to-br from-blue-50 to-indigo-500 min-h-screen p-6">
     <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
         <!-- Header with decorative elements -->
         <div class="relative bg-gradient-to-r from-blue-600 to-indigo-700 p-6 text-white">
-            <div class="absolute top-0 right-0 -mt-4 -mr-4 bg-yellow-400 w-20 h-20 rounded-full opacity-20"></div>
+            <div class="absolute top-0 right-0 -mt-4 -mr-4 bg-yellow-300 w-20 h-20 rounded-full opacity-20"></div>
             <div class="absolute bottom-0 left-0 -mb-6 -ml-6 bg-blue-400 w-24 h-24 rounded-full opacity-20"></div>
             
             <h1 class="text-3xl font-bold relative z-10 flex items-center">

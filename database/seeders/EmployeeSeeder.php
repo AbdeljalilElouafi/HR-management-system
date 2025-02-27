@@ -4,10 +4,9 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Department;
+use App\Models\Employee;
 
-
-class DepartmentSeeder extends Seeder
+class EmployeeSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,6 +14,6 @@ class DepartmentSeeder extends Seeder
     public function run()
     {
         
-        Department::factory()->count(5)->create();
+        Employee::factory()->count(10)->create();
     }
 }

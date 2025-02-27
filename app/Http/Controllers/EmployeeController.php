@@ -3,6 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Company; 
+use App\Models\Employee;
+use App\Models\Department;
+use App\Models\User;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\EmployeeAccountCreated;
 
 class EmployeeController extends Controller
 {
@@ -41,9 +49,26 @@ class EmployeeController extends Controller
             'department_id' => 'nullable|exists:departments,id',
         ]);
 
-        Employee::create($request->all());
+        
+        $password = Str::random(10);
 
-        return redirect()->route('employees.index')->with('success', 'Employee created successfully.');
+        
+        $employee = Employee::create($request->all());
+
+        
+        $user = User::create([
+            'name' => $request->first_name . ' ' . $request->last_name,
+            'email' => $request->email,
+            'password' => Hash::make($password),
+            'company_id' => $request->company_id,
+        ]);
+
+        
+        $user->assignRole('employee');
+
+        Mail::to($employee->email)->send(new EmployeeAccountCreated($password));
+
+        return redirect()->route('employees.index')->with('success', 'Employee created successfully. Password has been sent to their email.');
     }
 
     
