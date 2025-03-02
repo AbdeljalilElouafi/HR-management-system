@@ -9,9 +9,11 @@ use App\Http\Controllers\EmploiController;
 
 Route::view('/', 'welcome');
 
-Route::resource('employees', EmployeeController::class);
-Route::resource('departments', DepartmentController::class);
-Route::resource('emplois', EmploiController::class);
+Route::middleware('company')->group(function () {
+    Route::resource('employees', EmployeeController::class);
+    Route::resource('departments', DepartmentController::class);
+    Route::resource('emplois', EmploiController::class);
+});
 
 
 Route::get('/company/register', [CompanyRegistrationController::class, 'showRegistrationForm'])->name('company.register');

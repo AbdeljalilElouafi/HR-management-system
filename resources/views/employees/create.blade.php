@@ -86,14 +86,7 @@
                         </div>
                     </div>
                     
-                    <div>
-                        <label for="company_id" class="block text-sm font-medium text-gray-700">Company</label>
-                        <select name="company_id" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
-                            @foreach ($companies as $company)
-                                <option value="{{ $company->id }}">{{ $company->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                    
                 </div>
                 
                 <div class="space-y-4">

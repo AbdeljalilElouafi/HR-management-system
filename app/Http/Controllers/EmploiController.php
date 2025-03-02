@@ -15,28 +15,33 @@ class EmploiController extends Controller
      */
     public function index()
     {
-        $emplois = Emploi::with('department')->get();
+        $companyId = auth()->user()->company_id;
+        $emplois = Emploi::where('company_id', $companyId)->with('department')->get();
         return view('emplois.index', compact('emplois'));
     }
-
-    // Show the form to create a new emploi
+    
     public function create()
     {
-        $departments = Department::all();
+        $companyId = auth()->user()->company_id;
+        $departments = Department::where('company_id', $companyId)->get();
         return view('emplois.create', compact('departments'));
     }
-
-    // Store a new emploi
+    
     public function store(Request $request)
     {
+        $companyId = auth()->user()->company_id;
+    
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'department_id' => 'required|exists:departments,id',
         ]);
-
+    
+        // Add the company_id to the request data
+        $request->merge(['company_id' => $companyId]);
+    
         Emploi::create($request->all());
-
+    
         return redirect()->route('emplois.index')->with('success', 'Emploi created successfully.');
     }
 

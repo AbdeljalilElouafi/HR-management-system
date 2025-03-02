@@ -27,7 +27,8 @@ class CompanyRegistrationController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
         ]);
-
+    
+       
         $company = Company::create([
             'name' => $request->company_name,
             'sector' => $request->sector,
@@ -36,18 +37,21 @@ class CompanyRegistrationController extends Controller
             'contact_phone' => $request->contact_phone,
             'registration_date' => now(),
         ]);
-
+    
+        
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'company_id' => $company->id,
+            'company_id' => $company->id, 
         ]);
-
+    
+        
         $user->assignRole('admin');
-
+    
+        
         auth()->login($user);
-
-        return redirect('/dashboard');
+    
+        return redirect('/dashboard')->with('success', 'Company and admin account created successfully.');
     }
 }

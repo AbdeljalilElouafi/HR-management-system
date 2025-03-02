@@ -17,34 +17,33 @@ class DepartmentController extends Controller
      */
     public function index()
     {
-        $departments = Department::with('company', 'manager')->get();
+        $companyId = auth()->user()->company_id;
+        $departments = Department::where('company_id', $companyId)->get();
         return view('departments.index', compact('departments'));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
+    
     public function create()
     {
-        $companies = Company::all();
-        $managers = Employee::all();
-        return view('departments.create', compact('companies', 'managers'));
+        $companyId = auth()->user()->company_id;
+        $managers = Employee::where('company_id', $companyId)->get();
+        return view('departments.create', compact('managers'));
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+    
     public function store(Request $request)
     {
+        $companyId = auth()->user()->company_id;
+    
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'manager_id' => 'nullable|exists:employees,id',
-            'company_id' => 'required|exists:companies,id',
         ]);
-
+    
+        // Add the company_id to the request data
+        $request->merge(['company_id' => $companyId]);
+    
         Department::create($request->all());
-
+    
         return redirect()->route('departments.index')->with('success', 'Department created successfully.');
     }
 

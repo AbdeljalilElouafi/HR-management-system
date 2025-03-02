@@ -19,21 +19,25 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        $employees = Employee::with('company', 'department')->get();
+        // Get the authenticated user's company ID
+        $companyId = auth()->user()->company_id;
+    
+        // Fetch employees for the user's company
+        $employees = Employee::where('company_id', $companyId)->with('department')->get();
         return view('employees.index', compact('employees'));
     }
-
     
     public function create()
     {
-        $companies = Company::all();
-        $departments = Department::all();
-        return view('employees.create', compact('companies', 'departments'));
+        $companyId = auth()->user()->company_id;
+        $departments = Department::where('company_id', $companyId)->get();
+        return view('employees.create', compact('departments'));
     }
-
     
     public function store(Request $request)
     {
+        $companyId = auth()->user()->company_id;
+    
         $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -45,30 +49,15 @@ class EmployeeController extends Controller
             'contract_type' => 'required|string|max:255',
             'salary' => 'required|numeric',
             'status' => 'required|string|max:255',
-            'company_id' => 'required|exists:companies,id',
             'department_id' => 'nullable|exists:departments,id',
         ]);
-
-        
-        $password = Str::random(10);
-
-        
-        $employee = Employee::create($request->all());
-
-        
-        $user = User::create([
-            'name' => $request->first_name . ' ' . $request->last_name,
-            'email' => $request->email,
-            'password' => Hash::make($password),
-            'company_id' => $request->company_id,
-        ]);
-
-        
-        $user->assignRole('employee');
-
-        Mail::to($employee->email)->send(new EmployeeAccountCreated($password));
-
-        return redirect()->route('employees.index')->with('success', 'Employee created successfully. Password has been sent to their email.');
+    
+        // Add the company_id to the request data
+        $request->merge(['company_id' => $companyId]);
+    
+        Employee::create($request->all());
+    
+        return redirect()->route('employees.index')->with('success', 'Employee created successfully.');
     }
 
     

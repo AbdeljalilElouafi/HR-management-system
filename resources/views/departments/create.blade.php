@@ -13,14 +13,7 @@
             <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
             <textarea name="description" id="description" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></textarea>
         </div>
-        <div class="mb-4">
-            <label for="company_id" class="block text-sm font-medium text-gray-700">Company</label>
-            <select name="company_id" id="company_id" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
-                @foreach ($companies as $company)
-                    <option value="{{ $company->id }}">{{ $company->name }}</option>
-                @endforeach
-            </select>
-        </div>
+
         <div class="mb-4">
             <label for="manager_id" class="block text-sm font-medium text-gray-700">Manager</label>
             <select name="manager_id" id="manager_id" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
