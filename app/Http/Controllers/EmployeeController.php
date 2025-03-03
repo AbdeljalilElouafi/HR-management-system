@@ -7,6 +7,7 @@ use App\Models\Company;
 use App\Models\Employee;
 use App\Models\Department;
 use App\Models\User;
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -36,8 +37,9 @@ class EmployeeController extends Controller
     
     public function store(Request $request)
     {
+        // dd('died here');
         $companyId = auth()->user()->company_id;
-    
+
         $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -50,12 +52,40 @@ class EmployeeController extends Controller
             'salary' => 'required|numeric',
             'status' => 'required|string|max:255',
             'department_id' => 'nullable|exists:departments,id',
+            'role' => 'required|in:employee,manager,hr', // Validate the role
+        ]);
+
+        $request->merge(['company_id' => $companyId]);
+        // Create the user
+        $user = User::create([
+            'name' => $request->first_name . ' ' . $request->last_name,
+            'email' => $request->email,
+            'password' => Hash::make('password'), 
+            'company_id' => $companyId,
         ]);
     
-        // Add the company_id to the request data
-        $request->merge(['company_id' => $companyId]);
+        
+        $employee = Employee::create([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'date_of_birth' => $request->date_of_birth,
+            'hire_date' => $request->hire_date,
+            'address' => $request->address,
+            'contract_type' => $request->contract_type,
+            'salary' => $request->salary,
+            'status' => $request->status,
+            'department_id' => $request->department_id,
+            'user_id' => $user->id, 
+            'company_id' => $companyId,
+        ]);
     
-        Employee::create($request->all());
+        // Assign the selected role to the user
+        $role = Role::where('name', $request->role)->first();
+        if ($role) {
+            $user->assignRole($role);
+        }
     
         return redirect()->route('employees.index')->with('success', 'Employee created successfully.');
     }
@@ -76,6 +106,9 @@ class EmployeeController extends Controller
 
     public function update(Request $request, Employee $employee)
     {
+
+        $companyId = auth()->user()->company_id;
+
         $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -87,11 +120,20 @@ class EmployeeController extends Controller
             'contract_type' => 'required|string|max:255',
             'salary' => 'required|numeric',
             'status' => 'required|string|max:255',
-            'company_id' => 'required|exists:companies,id',
             'department_id' => 'nullable|exists:departments,id',
+            'role' => 'required|in:employee,manager,hr',
         ]);
 
+        
+        $request->merge(['company_id' => $companyId]);
+        
         $employee->update($request->all());
+
+        // Assign the selected role to the employee
+        $role = Role::where('name', $request->role)->first();
+        if ($role) {
+            $employee->user->assignRole($role);
+        }
 
         return redirect()->route('employees.index')->with('success', 'Employee updated successfully.');
     }
@@ -102,4 +144,22 @@ class EmployeeController extends Controller
         $employee->delete();
         return redirect()->route('employees.index')->with('success', 'Employee deleted successfully.');
     }
+
+
+    public function addCareerChange(Request $request, Employee $employee)
+    {
+        $request->validate([
+            'type' => 'required|string|max:255',
+            'title' => 'nullable|string|max:255',
+            'department_id' => 'nullable|exists:departments,id',
+            'salary' => 'nullable|numeric',
+            'change_date' => 'required|date',
+            'description' => 'nullable|string',
+        ]);
+
+        $employee->careerChanges()->create($request->all());
+
+        return redirect()->route('employees.show', $employee->id)->with('success', 'Career change added successfully.');
+    }
+
 }
