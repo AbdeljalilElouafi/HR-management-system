@@ -13,6 +13,7 @@ Route::middleware('company')->group(function () {
     Route::resource('employees', EmployeeController::class);
     Route::resource('departments', DepartmentController::class);
     Route::resource('emplois', EmploiController::class);
+    Route::post('/employees/{employee}/add-career-change', [EmployeeController::class, 'addCareerChange'])->name('employees.addCareerChange');
 });
 
 

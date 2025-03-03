@@ -85,6 +85,15 @@
                             <input type="number" name="salary" class="pl-7 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" required>
                         </div>
                     </div>
+
+                    <div>
+                        <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
+                        <select name="role" id="role" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
+                            <option value="employee">Employee</option>
+                            <option value="manager">Manager</option>
+                            <option value="hr">HR</option>
+                        </select>
+                    </div>
                     
                     
                 </div>
@@ -108,6 +117,8 @@
                             <option value="Probation">Probation</option>
                         </select>
                     </div>
+
+
                     
                     <div>
                         <label for="department_id" class="block text-sm font-medium text-gray-700">Department</label>

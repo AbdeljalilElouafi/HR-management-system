@@ -88,14 +88,7 @@
                         </div>
                     </div>
                     
-                    <div>
-                        <label for="company_id" class="block text-sm font-medium text-gray-700">Company</label>
-                        <select name="company_id" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
-                            @foreach ($companies as $company)
-                                <option value="{{ $company->id }}" {{ $employee->company_id == $company->id ? 'selected' : '' }}>{{ $company->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+
                 </div>
                 
                 <div class="space-y-4">
@@ -115,6 +108,15 @@
                             <option value="Active" {{ $employee->status == 'Active' ? 'selected' : '' }}>Active</option>
                             <option value="On Leave" {{ $employee->status == 'On Leave' ? 'selected' : '' }}>On Leave</option>
                             <option value="Probation" {{ $employee->status == 'Probation' ? 'selected' : '' }}>Probation</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
+                        <select name="role" id="role" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
+                            <option value="employee" {{ $employee->user->hasRole('employee') ? 'selected' : '' }}>Employee</option>
+                            <option value="manager" {{ $employee->user->hasRole('manager') ? 'selected' : '' }}>Manager</option>
+                            <option value="hr" {{ $employee->user->hasRole('hr') ? 'selected' : '' }}>HR</option>
                         </select>
                     </div>
                     

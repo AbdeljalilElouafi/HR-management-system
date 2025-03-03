@@ -26,6 +26,7 @@ class Employee extends Model
         'department_id',
         'manager_id',
         'emploi_id',
+        'user_id',
     ];
 
     public function company()
@@ -48,9 +49,19 @@ class Employee extends Model
         return $this->hasMany(Employee::class, 'manager_id');
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function emploi()
     {
         return $this->belongsTo(Emploi::class);
+    }
+
+    public function careerChanges()
+    {
+        return $this->hasMany(CareerChange::class)->orderBy('change_date', 'desc');
     }
 
 }

@@ -30,6 +30,11 @@ class User extends Authenticatable
         return $this->belongsTo(Company::class);
     }
 
+    public function employee()
+    {
+        return $this->hasOne(Employee::class);
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
