@@ -15,6 +15,33 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/orgchart/3.1.1/css/jquery.orgchart.min.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/orgchart/3.1.1/js/jquery.orgchart.min.js"></script>
+        <style>
+            .orgchart {
+                background-color: #f9fafb;
+                border: 1px solid #e5e7eb;
+                border-radius: 0.5rem;
+                padding: 1rem;
+            }
+
+            .orgchart .node {
+                background-color: #ffffff;
+                border: 1px solid #e5e7eb;
+                border-radius: 0.375rem;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+                padding: 1rem;
+                text-align: center;
+            }
+
+            .orgchart .node .title {
+                font-weight: 600;
+                color: #1f2937;
+            }
+
+            .orgchart .node .content {
+                font-size: 0.875rem;
+                color: #6b7280;
+            }
+        </style>
 
 
         <!-- Scripts -->
