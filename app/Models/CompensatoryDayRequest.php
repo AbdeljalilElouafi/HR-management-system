@@ -4,13 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class LeaveRequest extends Model
+class CompensatoryDayRequest extends Model
 {
     protected $fillable = [
         'employee_id',
-        'start_date',
-        'end_date',
-        'days_requested',
+        'date',
         'status',
         'reason',
     ];

@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('compensatory_day_requests', function (Blueprint $table) {
             $table->id();
             $table->foreignId('employee_id')->constrained()->onDelete('cascade');
-            $table->date('date'); // Date of compensatory day
+            $table->date('date'); 
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
-            $table->text('reason')->nullable(); // Reason for compensatory day
+            $table->text('reason')->nullable(); 
             $table->timestamps();
         });
     }

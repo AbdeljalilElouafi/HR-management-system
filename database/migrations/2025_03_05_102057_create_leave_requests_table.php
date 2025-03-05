@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('leave_requests', function (Blueprint $table) {
             $table->id();
             $table->foreignId('employee_id')->constrained()->onDelete('cascade');
-            $table->date('start_date'); // Start date of leave
-            $table->date('end_date'); // End date of leave
-            $table->integer('days_requested'); // Number of days requested
+            $table->date('start_date'); 
+            $table->date('end_date'); 
+            $table->integer('days_requested'); 
             $table->enum('status', ['pending', 'approved_by_manager', 'approved_by_hr', 'rejected'])->default('pending');
-            $table->text('reason')->nullable(); // Reason for leave
+            $table->text('reason')->nullable(); 
             $table->timestamps();
         });
     }
