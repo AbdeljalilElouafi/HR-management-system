@@ -32,7 +32,15 @@ class EmployeeController extends Controller
     {
         $companyId = auth()->user()->company_id;
         $departments = Department::where('company_id', $companyId)->get();
-        return view('employees.create', compact('departments'));
+
+        $managers = Employee::whereHas('user', function ($query) use ($companyId) {
+            $query->where('company_id', $companyId)
+                  ->whereHas('roles', function ($query) {
+                      $query->where('name', 'manager');
+                  });
+        })->get();
+    
+        return view('employees.create', compact('departments', 'managers'));
     }
     
     public function store(Request $request)
@@ -79,6 +87,7 @@ class EmployeeController extends Controller
             'department_id' => $request->department_id,
             'user_id' => $user->id, 
             'company_id' => $companyId,
+            'manager_id' => $request->manager_id,
         ]);
     
         // Assign the selected role to the user
@@ -86,6 +95,12 @@ class EmployeeController extends Controller
         if ($role) {
             $user->assignRole($role);
         }
+
+        $leaveBalance = $employee->calculateAnnualLeaveDays();
+        $employee->leaveBalance()->create([
+            'annual_leave_days' => $leaveBalance,
+            'compensatory_days' => 0, 
+        ]);
     
         return redirect()->route('employees.index')->with('success', 'Employee created successfully.');
     }

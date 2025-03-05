@@ -29,6 +29,11 @@ class Employee extends Model
         'user_id',
     ];
 
+    protected $casts = [
+        'hire_date' => 'date',
+    ];
+
+
     public function company()
     {
         return $this->belongsTo(Company::class);
@@ -69,6 +74,11 @@ class Employee extends Model
         return $this->belongsToMany(Training::class, 'employee_training')->withTimestamps();
     }
 
+    public function leaveBalance()
+    {
+        return $this->hasOne(LeaveBalance::class);
+    }
+
     public static function getHierarchy($companyId)
     {
         return self::where('company_id', $companyId)
@@ -83,5 +93,25 @@ class Employee extends Model
                 ];
             });
     }
+
+    public function calculateAnnualLeaveDays()
+    {
+
+        // dd($this->hire_date, gettype($this->hire_date));
+
+        $hireDate = $this->hire_date;
+        $now = now();
+        $monthsWorked = $hireDate->diffInMonths($now);
+        $yearsWorked = $hireDate->diffInYears($now);
+
+        if ($yearsWorked < 1) {
+            // Less than one year: 1.5 days per month
+            return $monthsWorked * 1.5;
+        } else {
+            // After one year: 18 days + 0.5 days per year
+            return 18 + ($yearsWorked - 1) * 0.5;
+        }
+    }
+
 
 }
