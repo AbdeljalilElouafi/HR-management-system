@@ -64,4 +64,24 @@ class Employee extends Model
         return $this->hasMany(CareerChange::class)->orderBy('change_date', 'desc');
     }
 
+    public function trainings()
+    {
+        return $this->belongsToMany(Training::class, 'employee_training')->withTimestamps();
+    }
+
+    public static function getHierarchy($companyId)
+    {
+        return self::where('company_id', $companyId)
+            ->with('manager')
+            ->get()
+            ->map(function ($employee) {
+                return [
+                    'id' => $employee->id,
+                    'name' => $employee->first_name . ' ' . $employee->last_name,
+                    'title' => $employee->job ? $employee->job->title : 'Employee',
+                    'parentId' => $employee->manager_id,
+                ];
+            });
+    }
+
 }

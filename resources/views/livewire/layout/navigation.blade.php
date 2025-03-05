@@ -55,6 +55,16 @@ new class extends Component
                     </x-nav-link>
                 </div>
                 @endcan
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('trainings.index')" :active="request()->routeIs('trainings.index')" wire:navigate>
+                        {{ __('Formations') }}
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('organigramme.index')" :active="request()->routeIs('organigramme.index')" wire:navigate>
+                        {{ __('Organigramme') }}
+                    </x-nav-link>
+                </div>
             </div>
 
             <!-- Settings Dropdown -->
