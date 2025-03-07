@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('leave_requests', function (Blueprint $table) {
-            $table->foreignId('manager_id')->nullable()->constrained('employees')->onDelete('set null');
+            $table->boolean('manager_approval')->default(false)->after('status');
+            $table->boolean('hr_approval')->default(false)->after('manager_approval');
         });
     }
 
@@ -22,8 +23,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('leave_requests', function (Blueprint $table) {
-            $table->dropForeign(['manager_id']);
-            $table->dropColumn('manager_id');
+            $table->dropColumn('manager_approval');
+            $table->dropColumn('hr_approval');
         });
     }
 };

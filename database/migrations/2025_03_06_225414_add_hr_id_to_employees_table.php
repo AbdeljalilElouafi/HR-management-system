@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('leave_requests', function (Blueprint $table) {
-            $table->foreignId('manager_id')->nullable()->constrained('employees')->onDelete('set null');
+        Schema::table('employees', function (Blueprint $table) {
+            $table->foreignId('hr_id')->nullable()->constrained('employees')->onDelete('set null');
         });
     }
 
@@ -21,9 +21,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('leave_requests', function (Blueprint $table) {
-            $table->dropForeign(['manager_id']);
-            $table->dropColumn('manager_id');
+        Schema::table('employees', function (Blueprint $table) {
+            $table->dropForeign(['hr_id']);
+            $table->dropColumn('hr_id');
         });
     }
 };

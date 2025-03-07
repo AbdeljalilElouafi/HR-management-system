@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\LeaveRequest;
 
 class LeaveRequestController extends Controller
 {
@@ -33,20 +34,26 @@ class LeaveRequestController extends Controller
             'end_date' => 'required|date|after_or_equal:start_date',
             'reason' => 'nullable|string',
         ]);
-
+    
+        $employee = auth()->user()->employee;
+    
         $daysRequested = \Carbon\Carbon::parse($request->start_date)->diffInDays($request->end_date) + 1;
-
+    
         LeaveRequest::create([
-            'employee_id' => auth()->user()->employee->id,
+            'employee_id' => $employee->id,
             'start_date' => $request->start_date,
             'end_date' => $request->end_date,
             'days_requested' => $daysRequested,
             'reason' => $request->reason,
+            'manager_id' => $employee->manager_id,
+            'hr_id' => $employee->hr_id, 
+            'status' => 'pending',
+            'manager_approval' => false, 
+            'hr_approval' => false, 
         ]);
-
+    
         return redirect()->route('leave-requests.index')->with('success', 'Leave request submitted successfully.');
     }
-
     /**
      * Display the specified resource.
      */

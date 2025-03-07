@@ -94,6 +94,16 @@
                             <option value="hr">HR</option>
                         </select>
                     </div>
+
+                    <div>
+                        <label for="hr_id" class="block text-sm font-medium text-gray-700">Hr</label>
+                        <select name="hr_id" id="hr_id" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            <option value="">Select hr</option>
+                            @foreach ($hrs as $hr)
+                                <option value="{{ $hr->id }}">{{ $hr->first_name }} {{ $hr->last_name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                     
                     
                 </div>
@@ -128,6 +138,8 @@
                             @endforeach
                         </select>
                     </div>
+
+
                     
                     <div>
                         <label for="department_id" class="block text-sm font-medium text-gray-700">Department</label>

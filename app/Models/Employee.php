@@ -27,6 +27,7 @@ class Employee extends Model
         'manager_id',
         'emploi_id',
         'user_id',
+        'hr_id',
     ];
 
     protected $casts = [
@@ -47,6 +48,11 @@ class Employee extends Model
     public function manager()
     {
         return $this->belongsTo(Employee::class, 'manager_id');
+    }
+
+    public function hr()
+    {
+        return $this->belongsTo(Employee::class, 'hr_id');
     }
 
     public function subordinates()

@@ -39,8 +39,15 @@ class EmployeeController extends Controller
                       $query->where('name', 'manager');
                   });
         })->get();
+
+        $hrs = Employee::whereHas('user', function ($query) use ($companyId) {
+            $query->where('company_id', $companyId)
+                  ->whereHas('roles', function ($query) {
+                      $query->where('name', 'hr');
+                  });
+        })->get();
     
-        return view('employees.create', compact('departments', 'managers'));
+        return view('employees.create', compact('departments', 'managers', 'hrs'));
     }
     
     public function store(Request $request)
@@ -60,7 +67,7 @@ class EmployeeController extends Controller
             'salary' => 'required|numeric',
             'status' => 'required|string|max:255',
             'department_id' => 'nullable|exists:departments,id',
-            'role' => 'required|in:employee,manager,hr', // Validate the role
+            'role' => 'required|in:employee,manager,hr', 
         ]);
 
         $request->merge(['company_id' => $companyId]);
@@ -88,6 +95,7 @@ class EmployeeController extends Controller
             'user_id' => $user->id, 
             'company_id' => $companyId,
             'manager_id' => $request->manager_id,
+            'hr_id' => $request->hr_id,
         ]);
     
         // Assign the selected role to the user
