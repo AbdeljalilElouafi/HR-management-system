@@ -20,10 +20,10 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        // Get the authenticated user's company ID
+        
         $companyId = auth()->user()->company_id;
     
-        // Fetch employees for the user's company
+        
         $employees = Employee::where('company_id', $companyId)->with('department')->get();
         return view('employees.index', compact('employees'));
     }
@@ -71,7 +71,7 @@ class EmployeeController extends Controller
         ]);
 
         $request->merge(['company_id' => $companyId]);
-        // Create the user
+        
         $user = User::create([
             'name' => $request->first_name . ' ' . $request->last_name,
             'email' => $request->email,
@@ -152,7 +152,7 @@ class EmployeeController extends Controller
         
         $employee->update($request->all());
 
-        // Assign the selected role to the employee
+        
         $role = Role::where('name', $request->role)->first();
         if ($role) {
             $employee->user->assignRole($role);

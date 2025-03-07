@@ -31,7 +31,7 @@ class LeaveRequest extends Model
 
     public function hr()
     {
-        return $this->belongsTo(User::class, 'hr_id');
+        return $this->belongsTo(Employee::class, 'hr_id');
     }
     
 }

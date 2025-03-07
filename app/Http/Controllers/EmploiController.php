@@ -37,7 +37,7 @@ class EmploiController extends Controller
             'department_id' => 'required|exists:departments,id',
         ]);
     
-        // Add the company_id to the request data
+        
         $request->merge(['company_id' => $companyId]);
     
         Emploi::create($request->all());
@@ -45,20 +45,20 @@ class EmploiController extends Controller
         return redirect()->route('emplois.index')->with('success', 'Emploi created successfully.');
     }
 
-    // Show a specific emploi
+    
     public function show(Emploi $emploi)
     {
         return view('emplois.show', compact('emploi'));
     }
 
-    // Show the form to edit an emploi
+    
     public function edit(Emploi $emploi)
     {
         $departments = Department::all();
         return view('emplois.edit', compact('emploi', 'departments'));
     }
 
-    // Update an emploi
+    
     public function update(Request $request, Emploi $emploi)
     {
         $request->validate([
@@ -72,7 +72,7 @@ class EmploiController extends Controller
         return redirect()->route('emplois.index')->with('success', 'Emploi updated successfully.');
     }
 
-    // Delete an emploi
+    
     public function destroy(Emploi $emploi)
     {
         $emploi->delete();
